@@ -24,7 +24,7 @@ public interface TaskRepository extends BaseRepository<Task> {
 
     @Modifying
     @Query(value = """
-            WITH RECURSIVE task_with_subtasks AS (
+            WITH RECURSIVE task_with_subtasks(id, child) AS (
                 SELECT id, id AS child
                 FROM task
                 WHERE parent_id is null AND id =:taskId
