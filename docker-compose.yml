@@ -1,0 +1,38 @@
+services:
+  postgres-db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: jira
+      POSTGRES_PASSWORD: JiraRush
+      POSTGRES_DB: jira
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jira -d jira"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  postgres-db-test:
+    image: postgres:16
+    container_name: postgres-db-test
+    environment:
+      POSTGRES_USER: jira
+      POSTGRES_PASSWORD: JiraRush
+      POSTGRES_DB: jira-test
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata-test:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jira -d jira-test"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
+  pgdata-test:
